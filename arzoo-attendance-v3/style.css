@@ -1,0 +1,333 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+  }
+  
+  header {
+    background: #007bff;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  nav {
+    margin-top: 10px;
+  }
+  
+  nav button {
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .section {
+    padding: 20px;
+  }
+  
+  form input, form button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+  }
+  
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background: #ffffff;
+    margin-bottom: 20px;
+  }
+  
+  #attendanceTableContainer {
+    overflow-x: auto;
+    margin-top: 20px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 5px;
+    text-align: center;
+  }
+  
+  thead {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+  }
+  
+  .edit-btn,
+.delete-btn {
+  margin: 2px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.edit-btn {
+  background-color: #2196f3;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+#attendanceChart {
+    background: #fafafa;
+    padding: 6px;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    max-width: 650px;
+    margin: 0 auto;
+  }
+  
+  #dashboard h2 {
+    text-align: center;
+    margin-bottom: 20px; /* Optional: space below the heading */
+  }
+
+  /* Form Section Styling */
+#employeeForm {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Title */
+.form-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Layout */
+.employee-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Input Fields */
+.employee-form input {
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.employee-form input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0,123,255,0.4);
+}
+
+/* Add Employee Button */
+.add-btn {
+  background: #28a745;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.3s;
+}
+
+.add-btn:hover {
+  background: #218838;
+}
+
+/* Center the form */
+#employeeForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+#employeeForm h2 {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+#addEmployeeForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 350px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.form-group i {
+  margin-right: 10px;
+  font-size: 18px;
+  color: #555;
+}
+
+.form-group input {
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 16px;
+  flex: 1;
+}
+
+/* Add Employee Button */
+.add-btn {
+  background: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-btn:hover {
+  background: #28a745; /* Turns green */
+}
+
+
+/* Attendance Section Styles */
+#attendance {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  #attendance h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  #attendance label {
+    font-weight: 600;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  
+  #attendance input[type="month"] {
+    padding: 6px 10px;
+    font-size: 16px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+  
+  #attendance input[type="month"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+  }
+  
+  #attendance button {
+    margin-left: 10px;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 15px;
+    border: 2px solid #333;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #f2f2f2;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  #attendance button:hover {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+  }
+  
+  #attendanceTableContainer {
+    margin-top: 25px;
+    overflow-x: auto;
+    max-height: 450px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+    background-color: white;
+    padding: 15px;
+  }
+  
+  /* Style attendance table inside container */
+  #attendanceTableContainer table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #attendanceTableContainer th, #attendanceTableContainer td {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  
+  #attendanceTableContainer th {
+    background-color: #f4f4f4;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  #attendanceTableContainer select {
+    padding: 4px 6px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-weight: bold;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  
+  #attendanceTableContainer select:hover {
+    border-color: #4CAF50;
+  }
+  
+  #attendanceTableContainer select:disabled {
+    background-color: #eee;
+    cursor: not-allowed;
+    color: #777;
+  }
+  
+ 

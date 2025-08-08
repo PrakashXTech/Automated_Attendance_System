@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arzoo Institute Attendance System</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      .section {
+        display: none;
+        padding: 20px;
+      }
+      .active {
+        display: block;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 5px;
+      }
+      .sunday {
+        background-color: #ffcccc !important;
+        pointer-events: none;
+      }
+      .action-buttons button {
+        margin: 2px;
+      }
+
+      nav {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .nav-button {
+        font-size: 12px;
+        font-weight: bold;
+        padding: 10px 10px;
+        border: 2px solid #333;
+        background-color: #f2f2f2;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .nav-button i {
+        margin-right: 8px;
+      }
+
+      .nav-button:hover {
+        background-color: #ddd;
+        transform: scale(1.05);
+      }
+
+      h1 {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      /* Dashboard Summary Boxes */
+      .dashboard-summary {
+        display: flex;
+        justify-content: space-around;
+        gap: 15px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .summary-card {
+        flex: 1 1 200px;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .summary-card h3 {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      .summary-card p {
+        font-size: 22px;
+        margin: 0;
+      }
+
+      /* Different colors for each box */
+      .total-employee {
+        background-color: #007bff;
+      }
+      .total-present {
+        background-color: #28a745;
+      }
+      .total-absent {
+        background-color: #dc3545;
+      }
+      .total-leave {
+        background-color: #ffc107;
+        color: black;
+      }
+
+      /* Chart Container Styling */
+      .chart-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      #attendanceChart {
+        max-height: 350px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Arzoo Institute - Attendance System</h1>
+      <nav>
+        <button class="nav-button" onclick="showSection('dashboard')">
+          <i class="fas fa-chart-line"></i> Dashboard
+        </button>
+        <button class="nav-button" onclick="showSection('employeeForm')">
+          <i class="fas fa-user-plus"></i> Add Employee
+        </button>
+        <button class="nav-button" onclick="showSection('attendance')">
+          <i class="fas fa-calendar-check"></i> Attendance
+        </button>
+      </nav>
+    </header>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="section active">
+      <h2>Attendance Summary</h2>
+
+      <!-- Summary Boxes -->
+      <div class="dashboard-summary">
+        <div class="summary-card total-employee">
+          <h3>Total Employees</h3>
+          <p id="totalEmployees">0</p>
+        </div>
+        <div class="summary-card total-present">
+          <h3>Total Present</h3>
+          <p id="totalPresent">0</p>
+        </div>
+        <div class="summary-card total-absent">
+          <h3>Total Absent</h3>
+          <p id="totalAbsent">0</p>
+        </div>
+        <div class="summary-card total-leave">
+          <h3>Total Leave</h3>
+          <p id="totalLeave">0</p>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-container">
+        <canvas id="attendanceChart"></canvas>
+      </div>
+    </section>
+
+    <!-- ===== Replace your existing Employee Form section with this block ===== -->
+    <section id="employeeForm" class="section" style="display: none">
+      <style>
+        /* local styling scoped to the section (won't overwrite global styles usually) */
+        #employeeForm .form-card {
+          max-width: 520px;
+          margin: 30px auto;
+          background: #fff;
+          padding: 24px;
+          border-radius: 12px;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+          border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        #employeeForm h2 {
+          text-align: center;
+          margin-bottom: 18px;
+          font-size: 22px;
+        }
+        .form-group {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          background: #f7f9fb;
+          padding: 21px 14px;
+          border-radius: 10px;
+          border: 1px solid #e6eef8;
+        }
+        .form-group i {
+          font-size: 18px;
+          color: #556;
+          width: 20px;
+          text-align: center;
+        }
+        .form-group input {
+          flex: 1;
+          border: none;
+          outline: none;
+          font-size: 15px;
+          background: transparent;
+        }
+        .add-btn {
+          margin-top: 10px;
+          width: 100%;
+          padding: 12px;
+          font-size: 16px;
+          font-weight: 700;
+          border-radius: 10px;
+          border: 2px solid #0b6;
+          background: #0a8;
+          color: #fff;
+          cursor: pointer;
+          transition: background 0.18s, transform 0.12s;
+        }
+        /* not-green default, but will turn green on hover */
+        .add-btn {
+          background: #2196f3;
+          border-color: #1976d2;
+        }
+        .add-btn:hover {
+          background: #28a745 !important;
+          border-color: #218838 !important;
+          transform: translateY(-2px);
+        }
+        /* responsive */
+        @media (max-width: 480px) {
+          #employeeForm .form-card {
+            margin: 20px;
+            padding: 16px;
+          }
+        }
+      </style>
+
+      <div class="form-card">
+        <h2>Add New Employee</h2>
+
+        <form id="addEmployeeFormLocal">
+          <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="nameLocal" placeholder="Name" required />
+          </div>
+
+          <div class="form-group">
+            <i class="fas fa-phone"></i>
+            <input
+              type="text"
+              id="phoneLocal"
+              placeholder="Phone Number"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <i class="fas fa-calendar-alt"></i>
+            <input type="date" id="dojLocal" required />
+          </div>
+
+          <div class="form-group">
+            <i class="fas fa-briefcase"></i>
+            <input
+              type="text"
+              id="designationLocal"
+              placeholder="Designation"
+              required
+            />
+          </div>
+
+          <button type="submit" class="add-btn">➕ Add Employee</button>
+        </form>
+      </div>
+
+      <script>
+        // local handler that proxies to your original logic (so we don't break existing script.js)
+        (function(){
+          // show the section immediately so you can see the changes
+          document.getElementById('employeeForm').style.display = 'block';
+
+          // on submit, copy values into the existing global form if present and trigger its submit
+          const localForm = document.getElementById('addEmployeeFormLocal');
+          localForm.addEventListener('submit', function(e){
+            e.preventDefault();
+            // copy to global form fields if they exist, else save directly to localStorage as fallback
+            const name = document.getElementById('nameLocal').value.trim();
+            const phone = document.getElementById('phoneLocal').value.trim();
+            const doj = document.getElementById('dojLocal').value;
+            const designation = document.getElementById('designationLocal').value.trim();
+
+            // prefer to use existing global form elements (keeps your script.js behavior)
+            const nameGlobal = document.getElementById('name');
+            if (nameGlobal){
+              nameGlobal.value = name;
+              document.getElementById('phone')?.value = phone;
+              document.getElementById('doj')?.value = doj;
+              document.getElementById('designation')?.value = designation;
+              // if original form exists, submit it programmatically to trigger your original handler
+              const originalForm = document.getElementById('addEmployeeForm');
+              if (originalForm){
+                originalForm.dispatchEvent(new Event('submit', {cancelable: true}));
+                alert('Employee added (via original form).');
+                localForm.reset();
+                return;
+              }
+            }
+
+            // fallback: save directly to localStorage using same structure as your app
+            const employees = JSON.parse(localStorage.getItem('employees') || '[]');
+            employees.push({ name, phone, doj, designation });
+            localStorage.setItem('employees', JSON.stringify(employees));
+            alert('Employee added (fallback localStorage).');
+            localForm.reset();
+          });
+        })();
+      </script>
+    </section>
+
+    <!-- Attendance -->
+    <section id="attendance" class="section">
+      <style>
+        /* Attendance Section Styling */
+        #attendance {
+          max-width: 1000px;
+          margin: 0 auto;
+          text-align: center;
+        }
+
+        #attendance label {
+          font-weight: bold;
+          margin-right: 8px;
+        }
+
+        #attendance input[type="month"] {
+          padding: 8px;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          outline: none;
+        }
+
+        #attendance button {
+          padding: 10px 16px;
+          margin: 10px 5px;
+          border: none;
+          background-color: #007bff;
+          color: #fff;
+          border-radius: 6px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        #attendance button:hover {
+          background-color: #28a745;
+          transform: translateY(-2px);
+        }
+
+        /* Table Styling */
+        #attendanceTableContainer {
+          margin-top: 20px;
+          overflow-x: auto;
+          padding: 20px;
+          background: #ffffff;
+          border-radius: 10px;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+          /* Bigger size */
+          width: 95%;
+          min-height: 100px; /* Increased height */
+          max-width: 1200px;
+          margin-left: 20px;
+          margin-right: auto;
+        }
+
+        /* Table Styling */
+        /* #attendanceTableContainer table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 0 auto;
+          font-size: 16px; /* Bigger text */
+
+        #attendanceTableContainer table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 0 auto;
+          font-size: 16px; /* Bigger text */
+        }
+
+        #attendanceTableContainer th,
+        #attendanceTableContainer td {
+          padding: 12px;
+          text-align: center;
+          border: 1px solid #ccc;
+        }
+
+        #attendanceTableContainer th {
+          background-color: #f4f4f4;
+        }
+
+        /* Sunday Cell Highlight */
+        .sunday {
+          background-color: #ffcccc !important;
+          pointer-events: none;
+        }
+      </style>
+
+      <h2>Mark Attendance</h2>
+      <div>
+        <label for="attendanceMonth">Select Month:</label>
+        <input type="month" id="attendanceMonth" />
+        <button onclick="loadAttendanceTable()">Load Attendance</button>
+        <button onclick="saveAttendance()">Save Attendance</button>
+      </div>
+
+      <div id="attendanceTableContainer"></div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
